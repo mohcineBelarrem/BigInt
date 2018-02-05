@@ -29,28 +29,59 @@ class BigInt : CustomStringConvertible {
         
         let sum = BigInt(String(repeating: "0", count: mx))
         
-        var reste = 0
+        var remainder = 0
         
         for i in (0...mx-1).reversed() {
             
-            let s = reste + left.arr[i] + right.arr[i]
+            let s = remainder + left.arr[i] + right.arr[i]
             
             if s >= 10 {
                 sum.arr[i] = s - 10
-                reste = 1
+                remainder = 1
             }
             else {
                 sum.arr[i] = s
-                reste = 0
+                remainder = 0
             }
         }
         
-        if reste > 0 {
-            sum.arr.insert(reste, at: 0)
+        if remainder > 0 {
+            sum.arr.insert(remainder, at: 0)
         }
         return sum
     }
     
+    
+    static func * (left: Int, right: BigInt) -> BigInt {
+        
+        let prod = BigInt(String(repeating: "0", count: right.size))
+        
+        var remainder = 0
+        
+        for i in (0...right.size-1).reversed() {
+            
+            let s = remainder + left * right.arr[i]
+            
+            if s >= 10 {
+                prod.arr[i] = s - (s/10)*10
+                remainder = (s/10)
+            }
+            else {
+                prod.arr[i] = s
+                remainder = 0
+            }
+        }
+        
+        if remainder > 0 {
+            prod.arr.insert(remainder, at: 0)
+        }
+        return prod
+    }
+    
+    //
+    static func * (left: BigInt, right: Int) -> BigInt {
+        return right * left
+    }
     
     public var description : String {
         var str = ""
@@ -74,9 +105,14 @@ class BigInt : CustomStringConvertible {
 
 
 
-let bi = BigInt("99929292")
+let bi = BigInt("983")
 let br = BigInt("21345683")
 
-let s = bi + br
+//let s = bi + br
 
-print(s)
+
+
+
+//print(s)
+
+print(5*bi)
